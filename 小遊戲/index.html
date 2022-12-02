@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@900&display=swap" rel="stylesheet">
+  <title>Document</title>
+  <style>
+    body {
+      overflow: hidden;
+      background: black;
+    }
+
+    #game {
+      width: 1350px;
+      height: 700px;
+      margin: auto;
+      background: url(./images/背景.gif);
+      overflow: hidden;
+      position: relative;
+      top: 10px;
+      cursor: url(./images/準心-01.png) 50 50, auto;
+    }
+
+
+    img {
+      height: 200px;
+      position: absolute;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-user-drag: none;
+      transform-origin: bottom;
+    }
+
+    .blood {
+      /* 忽略點擊事件 */
+      pointer-events: none;
+    }
+
+    .swal2-icon-content {
+      font-family: 'Montserrat';
+    }
+
+    #footer {
+      width: 1350px;
+      height: 200px;
+      margin: auto;
+      background: linear-gradient(rgba(255, 255, 255, 0), rgba(90, 55, 45, 1)), url(./images/磚牆.png);
+      background-size: cover;
+      position: relative;
+    }
+
+
+
+    .btn {
+      padding: 0;
+      margin: 0;
+      width: 240px;
+      height: 100px;
+      background: url(./images/STAR.png);
+      background-size: cover;
+      border: none;
+      position: absolute;
+      top: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0px 10px 10px rgba(70, 35, 25, 1);
+    }
+
+    .p1 {
+      padding: 0;
+      margin: 0;
+      width: 100px;
+      height: 100px;
+      background: url(./images/分數磚.png);
+      background-size: cover;
+      position: absolute;
+      text-align: center;
+      top: 30px;
+      left: 60%;
+      font-weight: bold;
+    }
+
+    .p2 {
+      padding: 0;
+      margin: 0;
+      width: 100px;
+      height: 100px;
+      background: url(./images/分數磚.png);
+      background-size: cover;
+      position: absolute;
+      text-align: center;
+      top: 30px;
+      left: 70%;
+      font-weight: bold;
+    }
+
+    .p3 {
+      padding: 0;
+      margin: 0;
+      width: 100px;
+      height: 100px;
+      background: url(./images/分數磚.png);
+      background-size: cover;
+      position: absolute;
+      text-align: center;
+      top: 30px;
+      left: 80%;
+      font-weight: bold;
+    }
+
+    .p4 {
+      padding: 0;
+      margin: 0;
+      width: 100px;
+      height: 100px;
+      background: url(./images/分數磚.png);
+      background-size: cover;
+      position: absolute;
+      text-align: center;
+      top: 30px;
+      left: 90%;
+      font-weight: bold;
+    }
+
+    .HP {
+      position: absolute;
+      top: 0%;
+      left: 16%;
+      -webkit-text-stroke: 1px white;
+      color: rgb(90, 55, 45);
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 30px;
+
+    }
+
+    .hp {
+      position: absolute;
+      top: 3.5%;
+      left: 22%;
+      width: 300px;
+      height: 30px;
+      background: #d9ccb9;
+      border: 5px solid #715c4f;
+      transform-origin: top;
+    }
+
+    .hpBox {
+      position: absolute;
+      top: 3.5%;
+      left: 22%;
+      width: 300px;
+      height: 30px;
+      background: white;
+      border: 5px solid #715c4f;
+      transform-origin: top;
+    }
+
+    .left {
+      left: 15%;
+    }
+
+    #text-score,
+    #text-time,
+    #text-highscorename,
+    #text-highscore {
+      line-height: 40px;
+      color: rgb(90, 55, 45);
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 30px;
+    }
+
+    #btn-start:hover {
+      transform: scale(1.2);
+      transform-origin: 300%;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 主畫面 -->
+  <div id="game">
+    <p class="p1"><br>分數: <br><span id="text-score">0</span> </p>
+    <p class="p2"><br>剩餘時間: <br><span id="text-time">0</span> </p>
+    <p class="p3"><br>最高玩家: <br><span id="text-highscorename">沒有</span></p>
+    <p class="p4"><br>最高分: <br><span id="text-highscore">0</span> </p>
+  </div>
+  <!-- 血量 -->
+  <p class="HP">HP: <span id="HP">0</span></p>
+  <div class="hpBox"></div>
+  <div class="hp"></div>
+  <!-- 底 -->
+  <div id="footer">
+    <input type="button" value="" id="btn-start" class="btn">
+    <div class="shadow"></div>
+  </div>
+
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js'
+    integrity='sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=='
+    crossorigin='anonymous'></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    // 分數
+    let score = 0
+    // 剩餘秒數
+    let countdown = 0
+    // 計時器
+    let timer = 0
+    let hp = 0
+    // 最高分
+    // const storage = JSON.parse(localStorage.getItem('zombiegame'))
+    const highscore = localStorage.zombiegame ? JSON.parse(localStorage.zombiegame) : { name: '', score: 0 }
+    $('#text-highscorename').text(highscore.name)
+    $('#text-highscore').text(highscore.score)
+
+    function move(zombie) {
+      const top = '71%'
+      const left = '15%'
+
+      // 判斷出 zombie 的位置，得出使用 px 值
+      console.log('zombie', zombie.css('left'));
+
+      // 到底消失，扣血，當 left 到 202.5px
+      if (zombie.css('left') === '202.5px') {
+        zombie.remove()
+        hp--
+        $('#HP').text(hp)
+        $('.hp').css('width', '-=30')
+      }
+
+      zombie.stop().animate({ top, left }, (Math.random() * 2000) + 1500, function () {
+        if ($('#btn-start').attr('disabled') === 'disabled') {
+          move(zombie)
+        }
+      })
+    }
+
+    $('#btn-start').click(function () {
+      // 停用開始按鈕
+      $(this).attr('disabled', true)
+      // 重設
+      score = 0
+      $('#text-score').text(score)
+      countdown = 60
+      $('#text-time').text(countdown)
+      hp = 10
+      $('#HP').text(hp)
+
+      // 開始遊戲--------------------------------------------------------------
+      timer = setInterval(function () {
+        // 倒數 
+        countdown--
+        $('#text-time').text(countdown)
+        console.log($('.zombie'))
+
+
+        const random = Math.ceil(Math.random() * 10000)
+        if (random > 1000 && $('.zombie').length < 1000) {
+          const size = Math.round(Math.random() * 190 + 80) + '%'
+          const monster = Math.ceil(Math.random() * 2)
+          const zombie = $(`<img src="./images/monster-${monster}.gif" class="zombie" style="top: 71%; left: 105%; transform: scale(${size});">`)
+          $('#game').append(zombie)
+          move(zombie)
+        }
+
+        // 多做 zombie
+        setInterval(function () {
+          const random = Math.ceil(Math.random() * 10000)
+          if (random > 100 && $('.zombie').length < 50) {
+            const size = Math.round(Math.random() * 190 + 80) + '%'
+            const monster = Math.ceil(Math.random() * 2)
+            const zombie = $(`<img src="./images/monster-${monster}.gif" class="zombie" style="top: 71%; left: 105%; transform: scale(${size});">`)
+            $('#game').append(zombie)
+            move(zombie)
+          }
+        }, 30000)
+
+
+        // 時間到
+        if (countdown === 0) {
+          // 停止倒數
+          clearInterval(timer)
+          $('.hp').css('width', '300')
+          // 清空
+          $('#game img').remove()
+          // 重新啟用開始按鈕
+          $('#btn-start').attr('disabled', false)
+
+          if (score > highscore.score) {
+            Swal.fire({
+              icon: 'info',
+              title: '時間到',
+              text: `最高分，你得到 ${score} 分`,
+              inputPlaceholder: '請輸入名字',
+              input: 'text',
+              inputAttributes: {
+                required: true
+              },
+              validationMessage: '名稱必填',
+              allowOutsideClick: false,
+              allowEscapeKey: false
+            }).then(result => {
+              highscore.score = score
+              highscore.name = result.value
+              $('#text-highscorename').text(highscore.name)
+              $('#text-highscore').text(highscore.score)
+
+              // localStorage.setItem('zombiegame', JSON.stringify(highscore))
+              localStorage.zombiegame = JSON.stringify(highscore)
+            })
+          } else {
+            Swal.fire({
+              icon: 'info',
+              title: '時間到',
+              text: `你得到 ${score} 分`
+            })
+          }
+        }
+
+        // 時間到
+        if (hp === 0) {
+          // 停止倒數
+          countdown = 0
+          $('#text-time').text(countdown)
+          clearInterval(timer)
+          $('.hp').css('width', '300')
+          // 清空
+          // $('.zombie').removeClass()
+          $('.zombie').remove()
+          // 重新啟用開始按鈕
+          $('#btn-start').attr('disabled', false)
+          Swal.fire({
+            icon: 'info',
+            title: '已死亡',
+            text: `請重新開始`
+          })
+        }
+
+      }, 1000)
+    })
+
+    // 點擊事件
+    $('#game').on('click', '.zombie', function () {
+      // $(this).removerClass('zombie-ok')
+      $(this).hide()
+      // $(this).attr('src', './blood.png')
+      $(this).removeClass('zombie')
+      // $(this).removeClass('zombie').addClass('blood')
+      // $(this).stop()
+      score++
+      $('#text-score').text(score)
+    })
+
+  </script>
+</body>
+
+</html>
